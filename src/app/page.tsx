@@ -3,7 +3,7 @@ import CustomButton from "./CustomButton";
 
 export default function Home() {
   return (
-    <div className="container mx-auto p-4 flex flex-col gap-2">
+    <div className="container mx-auto flex flex-col gap-2">
       <h1>nextjs website</h1>
       <div className="w-[250px] flex flex-col gap-2">
         <CustomButton isRounded disabled />

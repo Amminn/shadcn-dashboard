@@ -1,5 +1,8 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { LogOut, Moon, Settings, Sun, User } from "lucide-react";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,25 +10,25 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTheme } from "next-themes";
-
-import Link from "next/link";
-import { LogOut, Moon, Sun, Settings, User } from "lucide-react";
+} from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { useTheme } from "next-themes";
+import { SidebarTrigger, useSidebar } from "./ui/sidebar";
 
-function testing() {
-  console.log("this is a test");
-}
-
-export default function Navbar() {
+const Navbar = () => {
   const { setTheme } = useTheme();
-
+  // const { toggleSidebar } = useSidebar();
   return (
-    <nav className="p-4 flex items-center justify-between">
-      collapseButton
+    <nav className="p-4 flex items-center justify-between sticky top-0 bg-background z-10">
+      {/* LEFT */}
+      <SidebarTrigger />
+      {/* <Button variant="outline" onClick={toggleSidebar}>
+        Custom Button
+      </Button> */}
+      {/* RIGHT */}
       <div className="flex items-center gap-4">
         <Link href="/">Dashboard</Link>
+        {/* THEME MENU */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon">
@@ -46,17 +49,18 @@ export default function Navbar() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        {/* USER MENU */}
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar>
-              <AvatarImage src="https://avatars.githubusercontent.com/u/55767303?v=4" />
-              <AvatarFallback>Am</AvatarFallback>
+              <AvatarImage src="https://avatars.githubusercontent.com/u/1486366" />
+              <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
-          <DropdownMenuContent sideOffset={4}>
+          <DropdownMenuContent sideOffset={10}>
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => testing()}>
+            <DropdownMenuItem>
               <User className="h-[1.2rem] w-[1.2rem] mr-2" />
               Profile
             </DropdownMenuItem>
@@ -64,10 +68,7 @@ export default function Navbar() {
               <Settings className="h-[1.2rem] w-[1.2rem] mr-2" />
               Settings
             </DropdownMenuItem>
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={() => console.log("logout nows")}
-            >
+            <DropdownMenuItem variant="destructive">
               <LogOut className="h-[1.2rem] w-[1.2rem] mr-2" />
               Logout
             </DropdownMenuItem>
@@ -76,4 +77,6 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
