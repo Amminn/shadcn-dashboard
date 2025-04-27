@@ -54,6 +54,11 @@ const items = [
     icon: Inbox,
   },
   {
+    title: "User",
+    url: "/users/john-doe",
+    icon: User2,
+  },
+  {
     title: "Calendar",
     url: "#",
     icon: Calendar,
