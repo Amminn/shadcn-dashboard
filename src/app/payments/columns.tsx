@@ -71,7 +71,8 @@ export const columns: ColumnDef<Payment>[] = [
             `p-1 rounded-md w-max text-xs`,
             status === "pending" && "bg-yellow-500/40",
             status === "success" && "bg-green-500/40",
-            status === "failed" && "bg-red-500/40"
+            status === "failed" && "bg-red-500/40",
+            status === "processing" && "bg-blue-500/40"
           )}
         >
           {status as string}

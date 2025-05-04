@@ -111,7 +111,7 @@ const getData = async (): Promise<Payment[]> => {
     {
       id: "728ed52g",
       amount: 413,
-      status: "failed",
+      status: "processing",
       username: "Seth Fields",
       email: "sethfields@gmail.com",
     },
@@ -125,7 +125,7 @@ const getData = async (): Promise<Payment[]> => {
     {
       id: "728ed52i",
       amount: 754,
-      status: "success",
+      status: "processing",
       username: "Gary Banks",
       email: "garybanks@gmail.com",
     },
@@ -153,7 +153,7 @@ const getData = async (): Promise<Payment[]> => {
     {
       id: "728ed52m",
       amount: 123,
-      status: "pending",
+      status: "processing",
       username: "Ethel Waters",
       email: "ethelwaters@gmail.com",
     },
@@ -195,7 +195,7 @@ const getData = async (): Promise<Payment[]> => {
     {
       id: "728ed52s",
       amount: 328,
-      status: "failed",
+      status: "processing",
       username: "Bill Brewer",
       email: "billbrewer@gmail.com",
     },

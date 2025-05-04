@@ -2,6 +2,7 @@
 
 import {
   ColumnDef,
+  Row,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
@@ -19,11 +20,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/TablePagination";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { ArrowUpDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+function getPriority(step: number): string[] {
+  const baseOrder = ["success", "pending", "failed", "processing"];
+  const effectiveStep = step === -1 ? 0 : step % 4;
+  return [
+    ...baseOrder.slice(effectiveStep),
+    ...baseOrder.slice(0, effectiveStep),
+  ];
 }
 
 export function DataTable<TData, TValue>({
@@ -32,10 +39,42 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
+  const [statusSortStep, setStatusSortStep] = useState(-1);
+
+  const columnsWithSorting = useMemo(() => {
+    return columns.map((col) => {
+      if (col.accessorKey === "status") {
+        return {
+          ...col,
+          sortingFn: (rowA: Row<TData>, rowB: Row<TData>, columnId: string) => {
+            const statusA = rowA.getValue(columnId) as string;
+            const statusB = rowB.getValue(columnId) as string;
+            const priority = getPriority(statusSortStep);
+            return priority.indexOf(statusA) - priority.indexOf(statusB);
+          },
+          header: () => {
+            return (
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setStatusSortStep((prev) => (prev + 1) % 4);
+                  setSorting([{ id: "status", desc: false }]);
+                }}
+              >
+                Status
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            );
+          },
+        };
+      }
+      return col;
+    });
+  }, [columns, statusSortStep]);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: columnsWithSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -47,7 +86,6 @@ export function DataTable<TData, TValue>({
     },
   });
 
-  console.log(table);
   return (
     <div className="rounded-md border">
       <Table>
@@ -92,24 +130,6 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-      {/* <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div> */}
       <DataTablePagination table={table} />
     </div>
   );
